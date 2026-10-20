@@ -36,7 +36,7 @@ a{color:var(--accent)}
 .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
 header.nav{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
 header.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:56px}
-.brand{font:800 1.05rem var(--head);color:var(--ink);text-decoration:none}
+.brand{font:800 1.05rem var(--head);color:var(--ink);text-decoration:none;white-space:nowrap;flex-shrink:0}
 nav{display:flex;gap:18px;align-items:center;overflow-x:auto}
 nav a{color:var(--muted);text-decoration:none;font-size:.95rem;white-space:nowrap}
 nav a:hover{color:var(--ink)}
@@ -67,9 +67,12 @@ h3{font:600 1.2rem var(--head);margin:0 0 6px}
 .facts li{background:var(--surface);border-left:4px solid var(--hl);padding:12px 16px;border-radius:0 10px 10px 0}
 .facts b{display:block;font-family:var(--head)}
 .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
-.skill{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.skill{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;width:100%}
+.skill:hover{border-color:var(--accent)}
+.skill .st{display:block;font:600 1.2rem var(--head);margin:0 0 6px}
+.skill .more{display:block;margin-top:12px;color:var(--accent);font-weight:600;font-size:.92rem}
 .skill p{margin:0;color:var(--muted);font-size:.98rem}
-.skill .ic{font-size:1.5rem}
+.skill .ic{font-size:1.5rem;display:block}
 .projects{display:grid;gap:20px}
 .proj{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px;display:grid;grid-template-columns:1fr 240px;gap:24px}
 .proj p{margin:6px 0 0;color:var(--muted)}
@@ -102,6 +105,10 @@ dialog::backdrop{background:rgba(8,14,20,.65)}
 .dlg{padding:22px}
 .dlg img{width:100%;height:auto;border-radius:8px;border:1px solid var(--line);margin:14px 0;display:block}
 .dlg p{margin:0 0 4px;color:var(--muted)}
+.dlg ul.bul{margin:12px 0;padding-left:20px;color:var(--muted)}
+.dlg ul.bul li{margin-bottom:6px}
+.dlg .chips{margin:14px 0}
+.dlg h4{margin:16px 0 0;font:600 1rem var(--head)}
 .dlg .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .dlg .row button{font:inherit;cursor:pointer;background:none}
 .empty{border:2px dashed var(--line);border-radius:12px;padding:22px;color:var(--muted);grid-column:1/-1}
@@ -112,12 +119,15 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.9rem;border-top:1px sol
   .hero .wrap,.about{grid-template-columns:1fr}
   .proj{grid-template-columns:1fr}
   .job{grid-template-columns:1fr;gap:4px}
+  html{scroll-padding-top:110px}
+  header.nav .wrap{height:auto;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;gap:4px 16px}
+  nav{width:100%;padding-bottom:4px}
 }
 </style>
 </head>
 <body>
 <header class="nav"><div class="wrap">
-  <a class="brand" href="#inicio">ABL</a>
+  <a class="brand" href="#inicio">Adrián Barbudo López</a>
   <nav aria-label="Principal">
     <a href="#sobre-mi">Sobre mí</a><a href="#habilidades">Habilidades</a><a href="#proyectos">Proyectos</a>
     <a href="#experiencia">Experiencia</a><a href="#formacion">Formación</a><a href="#contacto">Contacto</a>
@@ -237,13 +247,30 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.9rem;border-top:1px sol
 <script>
 /* ====== EDITA AQUÍ: añade proyectos y certificados como objetos nuevos ====== */
 const SKILLS = [
-  {ic:"💻", t:"Sistemas operativos", d:"Windows Server y GNU/Linux. Gestión centralizada con Active Directory y GPO."},
-  {ic:"🌐", t:"Redes y servicios (CCNA)", d:"Redes corporativas con estándares Cisco CCNA: enrutamiento, switching y servicios de red."},
-  {ic:"🔐", t:"Seguridad y alta disponibilidad", d:"Seguridad física y lógica en entornos Microsoft, arquitecturas redundantes, recuperación ante desastres y bastionado."},
-  {ic:"🛡️", t:"Ciberseguridad", d:"Análisis de vulnerabilidades, auditorías de red, interceptación de tráfico, hacking ético y defensa perimetral."},
-  {ic:"🗄️", t:"Bases de datos (PL/SQL)", d:"Bases relacionales, consultas complejas, optimización, triggers y procedimientos almacenados."},
-  {ic:"📦", t:"Aplicaciones web", d:"Servidores web, interfaces con HTML y JavaScript, y pruebas con Realidad Virtual."},
-  {ic:"♻️", t:"Digitalización y sostenibilidad", d:"Criterios de sostenibilidad y transformación digital para optimizar recursos en infraestructuras IT."}
+  {ic:"💻", t:"Administración de sistemas operativos", d:"Windows Server, GNU/Linux y gestión centralizada con Active Directory.",
+   b:["Despliegue, configuración y administración de entornos Windows Server y distribuciones GNU/Linux.","Gestión centralizada de usuarios y equipos con Active Directory.","Aplicación de políticas de grupo (GPO) para configurar y controlar los equipos del dominio."],
+   tech:["Windows Server","Active Directory","GPO","GNU/Linux"]},
+  {ic:"🌐", t:"Servicios de red e Internet", d:"Redes corporativas basadas en los estándares de Cisco CCNA.",
+   b:["Diseño e implementación de infraestructuras de red corporativas siguiendo los estándares CCNA.","Configuración de enrutamiento dinámico (OSPF, EIGRP) y de conmutación con VLANs.","Direccionamiento IPv4 e IPv6 y segmentación del tráfico entre varias sucursales simuladas.","Prácticas con Cisco Packet Tracer y cursos de Cisco Networking Academy."],
+   tech:["Cisco CCNA","OSPF","EIGRP","VLANs","IPv4/IPv6","Packet Tracer"],
+   rel:[["Ver proyecto de redes corporativas","#proyectos"],["Ver certificados de Cisco","#certificados"]]},
+  {ic:"🔐", t:"Seguridad y alta disponibilidad", d:"Seguridad física y lógica, redundancia y recuperación ante desastres.",
+   b:["Estrategias de seguridad física y lógica en entornos Microsoft.","Diseño de arquitecturas redundantes para mantener los servicios disponibles.","Planes de contingencia y recuperación ante desastres (Disaster Recovery).","Bastionado de sistemas."],
+   tech:["Alta disponibilidad","Disaster Recovery","Bastionado","Entornos Microsoft"]},
+  {ic:"🛡️", t:"Ciberseguridad", d:"Auditorías de red, análisis de vulnerabilidades y hacking ético.",
+   b:["Análisis de vulnerabilidades y auditorías de red.","Interceptación y análisis de tráfico: laboratorio aislado con ARP Spoofing entre máquinas virtuales.","Fundamentos de hacking ético y defensa perimetral.","Formación complementaria: Introduction to Cybersecurity (Cisco) y Ciberseguridad y Hacking Ético (BIG school)."],
+   tech:["Kali Linux","Bettercap","Wireshark","VirtualBox"],
+   rel:[["Ver el laboratorio MitM","#proyectos"],["Ver certificados","#certificados"]]},
+  {ic:"🗄️", t:"Administración de sistemas gestores de bases de datos", d:"Bases de datos relacionales y PL/SQL avanzado.",
+   b:["Creación y administración de bases de datos relacionales.","Desarrollo de consultas complejas y optimización.","Triggers y procedimientos almacenados con PL/SQL avanzado.","Uso de MySQL en el sistema de gestión logística contenerizado."],
+   tech:["PL/SQL","MySQL","Triggers","Procedimientos almacenados"],
+   rel:[["Ver el sistema de gestión logística","#proyectos"]]},
+  {ic:"📦", t:"Implantación de aplicaciones web", d:"Servidores web, HTML, JavaScript y Realidad Virtual.",
+   b:["Despliegue y configuración de servidores web.","Desarrollo de interfaces y estructuración de datos con HTML y JavaScript.","Exploración de integraciones con Realidad Virtual."],
+   tech:["HTML","JavaScript","Servidores web","Realidad Virtual"]},
+  {ic:"♻️", t:"Digitalización y sostenibilidad", d:"Transformación digital con criterios de sostenibilidad.",
+   b:["Aplicación de criterios de sostenibilidad y transformación digital a los sectores productivos.","Optimización de recursos y mejora de la eficiencia tecnológica en infraestructuras IT."],
+   tech:["Transformación digital","Sostenibilidad","Eficiencia IT"]}
 ];
 const PROJECTS = [
   {t:"Auditoría y evasión: laboratorio MitM", d:"Entorno de red interno aislado para simular ataque y defensa. Pruebas de concepto de ARP Spoofing para interceptar y analizar tráfico entre máquinas virtuales.", tech:["Kali Linux","Windows 10","VirtualBox","Bettercap","Wireshark"]},
@@ -271,7 +298,7 @@ const CERTS = [
 /* ============================================================================ */
 const el=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-el("skills").innerHTML=SKILLS.map(s=>`<div class="skill"><div class="ic" aria-hidden="true">${s.ic}</div><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join("");
+el("skills").innerHTML=SKILLS.map((k,n)=>`<button type="button" class="skill" data-s="${n}"><span class="ic" aria-hidden="true">${k.ic}</span><span class="st">${esc(k.t)}</span><p>${esc(k.d)}</p><span class="more">Ver qué he trabajado</span></button>`).join("");
 el("projects").innerHTML=PROJECTS.map(p=>`<article class="proj"><div><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p>${p.url?`<a class="more" href="${esc(p.url)}" target="_blank" rel="noopener">Ver proyecto</a>`:""}</div><ul class="chips">${p.tech.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></article>`).join("");
 const CATS=[["todos","Todos"],["redes","Redes"],["ciberseguridad","Ciberseguridad"],["ia","IA"],["marketing","Marketing y SEO"]];
 const fmt=d=>new Date(d+"T12:00:00").toLocaleDateString("es-ES",{month:"long",year:"numeric"});
@@ -291,7 +318,14 @@ el("certs").addEventListener("click",e=>{
   el("dlg").showModal();
   el("dclose").focus();
 });
-el("dlg").addEventListener("click",e=>{if(e.target.id==="dlg"||e.target.id==="dclose")el("dlg").close()});
+el("dlg").addEventListener("click",e=>{if(e.target.id==="dlg"||e.target.id==="dclose"||e.target.closest("a[href^='#']"))el("dlg").close()});
+el("skills").addEventListener("click",e=>{
+  const b=e.target.closest(".skill");if(!b)return;
+  const k=SKILLS[b.dataset.s];
+  el("dlgbody").innerHTML=`<h3>${esc(k.t)}</h3><p>${esc(k.d)}</p><h4>Qué he trabajado</h4><ul class="bul">${k.b.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><ul class="chips">${k.tech.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><div class="row">${(k.rel||[]).map(([l,u])=>`<a class="btn primary" href="${esc(u)}">${esc(l)}</a>`).join("")}<button type="button" class="btn ghost" id="dclose">Cerrar</button></div>`;
+  el("dlg").showModal();
+  el("dclose").focus();
+});
 drawCerts();
 el("y").textContent=new Date().getFullYear();
 const root=document.documentElement;
